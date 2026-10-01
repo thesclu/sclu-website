@@ -1,6 +1,22 @@
 "use client";
 import { useRef, useState } from "react";
 
+// --------------------------------------------------------------------
+// TEMPORARY: submissions go straight to FormSubmit's AJAX endpoint from
+// the browser, with no backend of our own at all. This is an explicit,
+// short-term stopgap — a third party (FormSubmit) sees every field,
+// including the sensitive free-text ones, in plaintext, and there's no
+// server-side re-validation of anything the client sends. Swap this one
+// constant (and the fetch call below) for a real endpoint — the
+// Cloudflare Pages Function at functions/api/get-support.js already
+// does real validation and sends via Postmark — once that's ready.
+//
+// FormSubmit requires a one-time activation: the first submission to a
+// new destination address triggers a confirmation email that must be
+// clicked before anything actually gets delivered.
+// --------------------------------------------------------------------
+const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/intake@thesclu.org";
+
 const ISSUES = [
   { id: "harassment", label: "Sexual harassment / Title IX" },
   { id: "speech", label: "Free speech & protest" },
@@ -56,11 +72,17 @@ export default function GetSupportForm() {
     setSubmitErr(false);
     try {
       const data = Object.fromEntries(new FormData(form).entries());
-      data.ask = Array.from(askChecked).map((el) => el.value);
+      const askList = Array.from(askChecked).map((el) => el.value);
+      // FormSubmit just drops fields into an email body, so an array
+      // isn't meaningful to it the way it is to a real backend.
+      data.ask = askList.join(", ");
+      data._subject = `Get Support request — ${data.issue || "unspecified issue"}`;
+      data._replyto = data.age === "under13" ? data.guardianEmail : data.email;
+      data._template = "table";
 
-      const res = await fetch("/api/get-support", {
+      const res = await fetch(FORMSUBMIT_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("bad response");
@@ -88,6 +110,10 @@ export default function GetSupportForm() {
     <div ref={stageRef} className="gs-stage">
       {!sent && (
         <form ref={formRef} onSubmit={onSubmit} className="gs-form" noValidate={false}>
+          {/* FormSubmit honeypot — bots fill every field; humans never see
+              this one, so a non-empty value here means discard silently. */}
+          <input type="text" name="_honey" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+
           <div className="gs-section">
             <fieldset className="gs-fieldset">
               <legend className="gs-legend">
