@@ -42,7 +42,13 @@
   justify-content: space-between;
 }
 .gs-utility-links { display: flex; gap: 22px; }
-.gs-utility-links a { color: #c8d6e8; text-decoration: none; }
+.gs-utility-links a,
+.gs-utility-links span { color: #c8d6e8; text-decoration: none; }
+/* Not-yet-built pages: visible for layout, but inert — no href at all,
+   not even a dead link to a page that doesn't exist yet. */
+.gs-utility-links span,
+.gs-nav-desktop span,
+.gs-mobile-menu span { opacity: 0.55; cursor: default; }
 .gs-utility-current { text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 759px) {
@@ -68,7 +74,8 @@
 .gs-logo-tagline { font-size: 10.5px; color: #6c7683; letter-spacing: 0.04em; }
 
 .gs-nav-desktop { display: flex; align-items: center; gap: 26px; font-size: 13.5px; font-weight: 600; }
-.gs-nav-desktop a { color: #0b1f3a; text-decoration: none; }
+.gs-nav-desktop a,
+.gs-nav-desktop span { color: #0b1f3a; text-decoration: none; }
 .gs-donate-btn {
   padding: 11px 22px; background: #cc2429; color: #fff !important;
   text-decoration: none; font-weight: 700;
@@ -96,7 +103,9 @@
   display: flex;
   flex-direction: column;
 }
-.gs-mobile-menu a {
+.gs-mobile-menu a,
+.gs-mobile-menu span {
+  display: block;
   padding: 13px 0; border-bottom: 1px solid #efece4;
   color: #0b1f3a; text-decoration: none; font-size: 15px; font-weight: 600;
 }
@@ -345,7 +354,9 @@ a.gs-help-value:hover {
   box-sizing: border-box; flex-wrap: wrap;
 }
 .gs-footer-links { display: flex; gap: 18px; }
-.gs-footer-links a { color: #c8d6e8; text-decoration: none; }
+.gs-footer-links a,
+.gs-footer-links span { color: #c8d6e8; text-decoration: none; }
+.gs-footer-links span { opacity: 0.55; cursor: default; }
 
 /* ---------------------------------------------------------------------
    Mobile pass.

@@ -4,9 +4,12 @@ import { useState } from "react";
 const DONATE_URL =
   "https://www.zeffy.com/en-US/donation-form/donate-to-empower-youth-organizing-in-san-diego-2";
 
-// This header belongs only to /get-support for now. The rest of the site
-// still uses the older full-bleed header (see design_handoff_get_support
-// README, "Open items") — it gets rolled out site-wide separately.
+// This header belongs only to /get-support, the only page this site
+// actually has right now. Every nav item it shows the real site's future
+// structure (Campaigns, Press, About, etc.), but only three destinations
+// actually exist yet: Donate, Instagram, and the sclusd.org redirect.
+// Everything else renders as inert text (no href) rather than a link to
+// a page that isn't built, including the logo's usual link home.
 export default function GetSupportHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,12 +18,12 @@ export default function GetSupportHeader() {
       <div className="gs-utility-bar">
         <div className="gs-utility-inner">
           <div className="gs-utility-links">
-            <a href="/">Know Your Rights</a>
+            <span>Know Your Rights</span>
             <a href="/get-support" className="gs-utility-current">Get Support</a>
-            <a href="/">Español</a>
+            <span>Español</span>
           </div>
           <div className="gs-utility-links">
-            <a href="/">Search</a>
+            <span>Search</span>
             <a href="https://sclusd.org" target="_blank" rel="noopener">SCLU San Diego ↗</a>
           </div>
         </div>
@@ -28,19 +31,19 @@ export default function GetSupportHeader() {
 
       <div className="gs-header">
         <div className="gs-header-inner">
-          <a href="/" className="gs-logo">
+          <div className="gs-logo">
             <img src="/logo-seal.png" alt="SCLU" className="gs-logo-img" />
             <span className="gs-logo-text">
               <span className="gs-logo-name">SCLU</span>
               <span className="gs-logo-tagline">Students&rsquo; Civil Liberties Union</span>
             </span>
-          </a>
+          </div>
 
           <nav className="gs-nav-desktop" aria-label="Main">
-            <a href="/">Campaigns</a>
-            <a href="/">Take Action</a>
-            <a href="/">Press</a>
-            <a href="/">About</a>
+            <span>Campaigns</span>
+            <span>Take Action</span>
+            <span>Press</span>
+            <span>About</span>
             <a href={DONATE_URL} target="_blank" rel="noopener" className="gs-donate-btn">Donate</a>
           </nav>
 
@@ -61,13 +64,13 @@ export default function GetSupportHeader() {
 
         {menuOpen && (
           <nav className="gs-mobile-menu" aria-label="Main">
-            <a href="/">Campaigns</a>
-            <a href="/">Take Action</a>
-            <a href="/">Press</a>
-            <a href="/">About</a>
-            <a href="/">Know Your Rights</a>
+            <span>Campaigns</span>
+            <span>Take Action</span>
+            <span>Press</span>
+            <span>About</span>
+            <span>Know Your Rights</span>
             <a href="/get-support">Get Support</a>
-            <a href="/">Español</a>
+            <span>Español</span>
             <a href="https://sclusd.org" target="_blank" rel="noopener">SCLU San Diego ↗</a>
             <a href={DONATE_URL} target="_blank" rel="noopener" className="gs-mobile-donate">Donate</a>
           </nav>

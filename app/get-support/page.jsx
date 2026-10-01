@@ -89,11 +89,11 @@ export default function GetSupportPage() {
             Tax-deductible gifts support the SCLU Foundation, our 501(c)(3).
           </span>
           <span className="gs-footer-links">
-            <a href="/">Campaigns</a>
-            <a href="/">Press</a>
-            <a href="/">About</a>
+            <span>Campaigns</span>
+            <span>Press</span>
+            <span>About</span>
             <a href={DONATE_URL} target="_blank" rel="noopener">Donate</a>
-            <span>Instagram @sclu.sd</span>
+            <a href="https://www.instagram.com/sclu.sd/" target="_blank" rel="noopener">Instagram</a>
           </span>
         </div>
       </div>
