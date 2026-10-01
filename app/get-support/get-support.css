@@ -1,0 +1,397 @@
+/* Get Support page — scoped with a .gs- prefix so nothing here leaks into
+   the rest of the site, which still runs on the older visual system.
+   Copy, color, and spacing values are pulled verbatim from
+   design_handoff_get_support/Get Support C v3.dc.html — do not adjust
+   without checking that source; the legal copy is pending review and
+   must stay exact. */
+
+.gs-root {
+  background: #ffffff;
+  color: #141821;
+  font-family: "Libre Franklin", system-ui, sans-serif;
+}
+.gs-root a { color: #0b4ea2; }
+.gs-root a:hover { color: #08356e; }
+.gs-root input,
+.gs-root textarea,
+.gs-root select,
+.gs-root button { font-family: inherit; }
+
+.gs-container {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-inline: clamp(18px, 4vw, 40px);
+}
+
+/* ---- Utility bar --------------------------------------------------- */
+
+.gs-utility-bar {
+  background: #0a2447;
+  color: #c8d6e8;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+.gs-utility-inner {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 8px clamp(18px, 4vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gs-utility-links { display: flex; gap: 22px; }
+.gs-utility-links a { color: #c8d6e8; text-decoration: none; }
+.gs-utility-current { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 759px) {
+  .gs-utility-bar { display: none; }
+}
+
+/* ---- Header ---------------------------------------------------------- */
+
+.gs-header { background: #fff; border-bottom: 1px solid #e7e3d8; }
+.gs-header-inner {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 18px clamp(18px, 4vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gs-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+.gs-logo-img { width: 46px; height: 46px; border-radius: 50%; display: block; }
+.gs-logo-text { display: flex; flex-direction: column; gap: 1px; }
+.gs-logo-name { font-size: 18px; font-weight: 800; color: #0b1f3a; letter-spacing: -0.01em; }
+.gs-logo-tagline { font-size: 10.5px; color: #6c7683; letter-spacing: 0.04em; }
+
+.gs-nav-desktop { display: flex; align-items: center; gap: 26px; font-size: 13.5px; font-weight: 600; }
+.gs-nav-desktop a { color: #0b1f3a; text-decoration: none; }
+.gs-donate-btn {
+  padding: 11px 22px; background: #cc2429; color: #fff !important;
+  text-decoration: none; font-weight: 700;
+}
+.gs-donate-btn:hover { background: #e23b40; }
+
+.gs-hamburger {
+  display: none;
+  width: 44px; height: 44px; margin-right: -10px;
+  align-items: center; justify-content: center;
+  border: 0; background: transparent; cursor: pointer;
+}
+.gs-hamburger-icon { display: flex; flex-direction: column; gap: 5px; }
+.gs-hamburger-icon span {
+  display: block; width: 22px; height: 2.5px; background: #0a2447; border-radius: 2px;
+  transition: transform 150ms ease, opacity 150ms ease;
+}
+.gs-hamburger-icon--open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.gs-hamburger-icon--open span:nth-child(2) { opacity: 0; }
+.gs-hamburger-icon--open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+.gs-mobile-menu {
+  border-top: 1px solid #e7e3d8;
+  padding: 4px clamp(18px, 4vw, 40px) 20px;
+  display: flex;
+  flex-direction: column;
+}
+.gs-mobile-menu a {
+  padding: 13px 0; border-bottom: 1px solid #efece4;
+  color: #0b1f3a; text-decoration: none; font-size: 15px; font-weight: 600;
+}
+.gs-mobile-donate {
+  margin-top: 16px !important; padding: 14px !important;
+  background: #cc2429; color: #fff !important; text-align: center;
+  font-weight: 800; border-bottom: none !important;
+}
+
+@media (max-width: 759px) {
+  .gs-nav-desktop { display: none; }
+  .gs-hamburger { display: flex; }
+}
+
+/* ---- Main area --------------------------------------------------- */
+
+.gs-main { background: #fff; color: #141821; }
+.gs-main-inner {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  padding: clamp(24px, 2.5vw, 40px) clamp(18px, 4vw, 40px) clamp(24px, 3vw, 48px);
+  box-sizing: border-box;
+}
+.gs-row { display: flex; gap: clamp(36px, 4vw, 72px); align-items: flex-start; }
+.gs-content { flex: 1 1 0; min-width: 0; }
+
+.gs-sidebar { order: 2; flex: 0 0 340px; min-width: 0; display: flex; flex-direction: column; }
+@media (max-width: 1099px) {
+  .gs-sidebar { display: none; }
+}
+
+.gs-help-title { margin: 0; font-size: 15px; font-weight: 750; color: #000; }
+.gs-help-title--urgent { color: #a8171d; }
+.gs-help-block--second { margin-top: 36px; }
+.gs-help-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.4; color: #141821; }
+.gs-help-label { font-size: 12.5px; line-height: 1.4; color: #5a6370; }
+/* `.gs-root a { color: #0b4ea2 }` is an element+class selector, which
+   outranks a bare `.gs-help-value` class selector regardless of source
+   order — these links were rendering blue despite this rule. Matching
+   that specificity here so black actually wins. */
+a.gs-help-value,
+a.gs-help-value:hover {
+  color: #262b33;
+}
+.gs-help-value { font-weight: 700; text-decoration: none; white-space: nowrap; }
+.gs-help-value:hover { text-decoration: underline; }
+.gs-help-value--email { white-space: normal; word-break: break-all; }
+
+/* ---- Headline + intro ---------------------------------------------- */
+
+.gs-h1 {
+  margin: 0;
+  font-size: clamp(32px, 3.2vw, 52px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #141821;
+}
+
+.gs-intro {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 88ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #141821;
+}
+.gs-intro p { margin: 0; }
+.gs-intro a { font-weight: 600; }
+.gs-urgent-line { color: #a8171d; font-weight: 600; }
+.gs-urgent-line a { color: #a8171d; font-weight: 800; white-space: nowrap; }
+.gs-urgent-line strong { font-weight: 800; white-space: nowrap; }
+
+.gs-stage { width: 100%; margin-top: clamp(8px, 1vw, 16px); color: #141821; }
+
+/* Every size inside the form (text, padding, gaps, borders, checkboxes)
+   down 10% uniformly, per request — `zoom` scales the whole rendered box
+   model at once, which is the only way to shrink everything evenly
+   without manually recalculating each of the ~150 px values below. */
+.gs-form { zoom: 0.9; }
+
+/* ---- Form — shared field styles ------------------------------------ */
+
+.gs-section { display: flex; flex-direction: column; gap: 24px; padding: 24px 0 0; }
+.gs-section:first-child { padding-top: clamp(28px, 3vw, 40px); }
+
+.gs-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.gs-legend { padding: 0; margin-bottom: 10px; font-size: 14.5px; font-weight: 800; color: #141821; }
+.gs-legend--block { margin: 0 0 -14px; display: block; }
+.gs-required { color: #cc2429; font-weight: 700; margin-left: 3px; }
+
+.gs-label { display: block; margin-bottom: 8px; font-size: 14.5px; font-weight: 800; color: #141821; }
+.gs-label--block { margin: 0 0 -14px; }
+.gs-hint { font-weight: 500; color: #6c7683; }
+
+.gs-input,
+.gs-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1.5px solid #cfc9b8;
+  background: #fff;
+  font-size: 15px;
+  color: #141821;
+  border-radius: 0;
+  outline: none;
+}
+.gs-input:focus,
+.gs-textarea:focus {
+  border-color: #0a2447;
+  outline: 2px solid #ffd166;
+  outline-offset: 1px;
+}
+.gs-textarea { line-height: 1.55; resize: vertical; }
+
+.gs-option-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.gs-option-pill {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 10px 15px; background: #fff; border: 1.5px solid #d8d3c4;
+  font-size: 14px; font-weight: 400; cursor: pointer;
+}
+.gs-option-pill input { accent-color: #0a2447; width: 16px; height: 16px; margin: 0; }
+
+.gs-field-row { display: flex; flex-wrap: wrap; gap: 18px; }
+.gs-field { flex: 1 1 200px; min-width: 0; }
+
+.gs-checkbox-line {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; line-height: 1.6; color: #141821; cursor: pointer;
+}
+.gs-checkbox-line input {
+  accent-color: #0a2447; width: 18px; height: 18px; margin: 2px 0 0; flex-shrink: 0;
+}
+
+.gs-error { font-size: 14px; font-weight: 700; color: #b3151b; margin-top: 10px; }
+
+/* ---- Under-13 panel -------------------------------------------------- */
+
+.gs-panel-under13 {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: 20px 22px; background: #f6f4ee;
+}
+.gs-panel-note { margin: 0; font-size: 14px; line-height: 1.6; color: #141821; }
+
+/* ---- Issue grid ------------------------------------------------------ */
+
+.gs-issue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+}
+.gs-issue-option {
+  position: relative;
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 15px; border: 1.5px solid #d8d3c4;
+  font-size: 14px; font-weight: 400; cursor: pointer;
+}
+.gs-issue-option:hover { border-color: #0a2447; }
+.gs-issue-option input { accent-color: #0a2447; width: 16px; height: 16px; margin: 0; }
+.gs-issue-option--selected::after {
+  content: ""; position: absolute; inset: -1.5px;
+  border: 2.5px solid #0a2447; pointer-events: none;
+}
+
+.gs-imm-note {
+  margin-bottom: 8px;
+  padding: 13px 16px; background: #fff6db; border: 1px solid #ecd087;
+  font-size: 14px; line-height: 1.6; color: #5d4a00;
+}
+
+.gs-ask-other { margin-top: 16px; }
+
+/* ---- Disclaimer ------------------------------------------------------ */
+
+.gs-disclaimer {
+  padding-top: 8px; display: flex; flex-direction: column; gap: 14px; max-width: 76ch;
+}
+.gs-disclaimer h3 { margin: 0; font-size: 14.5px; font-weight: 800; color: #141821; }
+.gs-disclaimer p { margin: 0; font-size: 14px; line-height: 1.6; color: #141821; }
+
+.gs-confirm-fieldset { padding-top: 4px; display: flex; flex-direction: column; gap: 14px; }
+
+.gs-submit-row { display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 4px; }
+.gs-submit-btn {
+  padding: 16px 32px; background: #cc2429; color: #fff; border: 0; border-radius: 0;
+  font-size: 15px; font-weight: 800; cursor: pointer;
+}
+.gs-submit-btn:hover { background: #e23b40; }
+.gs-submit-btn:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+.gs-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* ---- Confirmation ------------------------------------------------------ */
+
+.gs-confirmation { padding: clamp(28px, 3vw, 40px) 0 0; }
+.gs-confirmation-bar { display: block; width: 30px; height: 3px; background: #ffd166; margin-bottom: 18px; }
+.gs-confirmation h2 {
+  margin: 0; font-size: clamp(32px, 3vw, 48px); line-height: 1;
+  font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase;
+}
+.gs-confirmation-lede { margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: #3f4650; }
+.gs-confirmation-tip { margin: 12px 0 0; font-size: 15px; line-height: 1.6; color: #6c7683; }
+.gs-send-another {
+  margin-top: 26px; padding: 13px 22px; background: #fff; border: 2px solid #0a2447;
+  border-radius: 0; color: #0a2447; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+.gs-send-another:hover { background: #0a2447; color: #fff; }
+
+/* ---- Bottom "Need assistance now?" block (replaces sidebar < 1100px) - */
+
+.gs-bottom-help {
+  display: none;
+  border-top: 1px solid #e7e3d8;
+  margin-top: clamp(32px, 5vw, 56px);
+}
+.gs-bottom-help-container {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 56px) clamp(18px, 4vw, 40px) clamp(40px, 6vw, 64px);
+  box-sizing: border-box;
+}
+.gs-bottom-help-inner {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #f6f4ee;
+  padding: 24px 22px 28px;
+}
+.gs-bottom-help-title { margin: 0 0 20px; font-size: 18px; font-weight: 800; color: #000; }
+
+@media (max-width: 1099px) {
+  .gs-bottom-help { display: block; }
+}
+
+/* ---- Footer --------------------------------------------------------- */
+
+.gs-footer { background: #0a2447; color: #c8d6e8; }
+.gs-footer-inner {
+  max-width: clamp(1200px, 88vw, 1690px);
+  margin: 0 auto;
+  padding: 24px clamp(18px, 4vw, 40px);
+  display: flex; justify-content: space-between; gap: 30px;
+  font-size: 11.5px; color: #7d8ea4;
+  box-sizing: border-box; flex-wrap: wrap;
+}
+.gs-footer-links { display: flex; gap: 18px; }
+.gs-footer-links a { color: #c8d6e8; text-decoration: none; }
+
+/* ---------------------------------------------------------------------
+   Mobile pass.
+
+   The desktop pill/checkbox groups (age, role, what-would-you-like)
+   use `flex-wrap`, which on a narrow screen produces a ragged grid —
+   two pills of unequal width on one row, then a single pill stranded
+   alone on the next with empty space beside it. On mobile that reads
+   as broken rather than designed, so below 640px every option group
+   stacks as one full-width column instead: consistent widths, no
+   orphaned rows, and a larger, easier tap target throughout.
+
+   This also adds a hairline rule between the form's three sections
+   (age/role, issue type, details+disclaimer) — at full length the
+   form is 30+ fields with zero grouping, which is hard to scan on a
+   small screen — and bumps input text to 16px, since anything smaller
+   makes iOS Safari zoom the whole page in on focus.
+   --------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .gs-section + .gs-section {
+    border-top: 1px solid #e7e3d8;
+    margin-top: 4px;
+    padding-top: 28px;
+  }
+
+  .gs-option-row {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .gs-option-pill,
+  .gs-issue-option {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 16px;
+  }
+
+  .gs-input,
+  .gs-textarea {
+    font-size: 16px;
+  }
+
+  .gs-submit-row { justify-content: stretch; }
+  .gs-submit-btn {
+    width: 100%;
+    padding: 16px 24px;
+  }
+}
