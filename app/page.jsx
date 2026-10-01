@@ -1,54 +1,20 @@
-import { PILLARS } from "../lib/content";
-import ScrollProgress from "../components/ScrollProgress";
-import Cursor from "../components/Cursor";
-import Justice from "../components/Justice";
-import Nav from "../components/Nav";
-import Hero from "../components/Hero";
-import Marquee from "../components/Marquee";
-import LetterSection from "../components/LetterSection";
-import Campaigns from "../components/Campaigns";
-import JoinForm from "../components/JoinForm";
-import Footer from "../components/Footer";
-import Press from "../components/Press";
-import Team from "../components/Team";
+// The real homepage (letter breakdown, Join, Campaigns, etc.) is parked
+// at app/_home-wip.jsx.bak -- not a route, so it never builds or ships.
+// Right now this site has exactly one real page: /get-support. The root
+// just bounces there. Next's metadata API can't produce an http-equiv
+// meta tag (only name/content), so this is rendered directly -- Next
+// hoists any <meta>/<title> a Server Component returns into <head>.
+// http-equiv is what actually makes a browser redirect; name="refresh"
+// (what the metadata API would have produced) is inert.
+export const metadata = { title: "SCLU" };
 
 export default function Home() {
   return (
     <>
-      <ScrollProgress />
-      <Cursor />
-      <Justice />
-      <Nav />
-      <main>
-        <Hero />
-        <Marquee />
-        {PILLARS.map((pillar, i) => (
-          <LetterSection key={pillar.letter} pillar={pillar} flip={i % 2 === 1} />
-        ))}
-        <Campaigns />
-        <Press />
-        <Team />
-        <section className="join" id="join">
-          <div className="container join-grid">
-            <div>
-              <h2>Join the Union</h2>
-              <p>
-                SCLU is a conscientiously inclusive organization. From data science to economics,
-                visual arts to political science — every passionate individual can be a strong
-                advocate when pushed in the right direction.
-              </p>
-              <div className="wings">
-                <span>Research · data science</span>
-                <span>Policy · economics</span>
-                <span>Community · visual arts</span>
-                <span>Outreach · political science</span>
-              </div>
-            </div>
-            <JoinForm />
-          </div>
-        </section>
-      </main>
-      <Footer />
+      <meta httpEquiv="refresh" content="0;url=/get-support" />
+      <p style={{ fontFamily: "system-ui, sans-serif", padding: 24 }}>
+        Redirecting to <a href="/get-support">Get Support</a>&hellip;
+      </p>
     </>
   );
 }
