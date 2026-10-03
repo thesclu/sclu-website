@@ -44,11 +44,8 @@
 .gs-utility-links { display: flex; gap: 22px; }
 .gs-utility-links a,
 .gs-utility-links span { color: #c8d6e8; text-decoration: none; }
-/* Not-yet-built pages: visible for layout, but inert — no href at all,
-   not even a dead link to a page that doesn't exist yet. */
-.gs-utility-links span,
-.gs-nav-desktop span,
-.gs-mobile-menu span { opacity: 0.55; cursor: default; }
+/* Not-yet-built pages are <span>s with no href, styled identically to the
+   real links on purpose: nothing should look disabled. */
 .gs-utility-current { text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 759px) {
@@ -356,7 +353,6 @@ a.gs-help-value:hover {
 .gs-footer-links { display: flex; gap: 18px; }
 .gs-footer-links a,
 .gs-footer-links span { color: #c8d6e8; text-decoration: none; }
-.gs-footer-links span { opacity: 0.55; cursor: default; }
 
 /* ---------------------------------------------------------------------
    Mobile pass.
