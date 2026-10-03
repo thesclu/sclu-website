@@ -17,6 +17,18 @@ import { useRef, useState } from "react";
 // --------------------------------------------------------------------
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/intake@thesclu.org";
 
+// FormSubmit caps the combined size of attachments at 10 MB; stay under it
+// with room for the rest of the request.
+const MAX_FILES = 5;
+const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
+const ACCEPTED_FILES = ".pdf,.png,.jpg,.jpeg,.heic,.gif,.doc,.docx,.txt,.rtf,.zip";
+
+function formatSize(bytes) {
+  return bytes < 1024 * 1024
+    ? `${Math.max(1, Math.round(bytes / 1024))} KB`
+    : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 const ISSUES = [
   { id: "harassment", label: "Sexual harassment / Title IX" },
   { id: "speech", label: "Free speech & protest" },
@@ -47,9 +59,34 @@ export default function GetSupportForm() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitErr, setSubmitErr] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [fileErr, setFileErr] = useState("");
 
   const formRef = useRef(null);
   const stageRef = useRef(null);
+
+  function addFiles(picked) {
+    const next = [...files];
+    for (const f of picked) {
+      if (!next.some((x) => x.name === f.name && x.size === f.size)) next.push(f);
+    }
+    const total = next.reduce((n, f) => n + f.size, 0);
+    if (next.length > MAX_FILES) {
+      setFileErr(`You can attach up to ${MAX_FILES} files. If you have more, put them in a .zip.`);
+      return;
+    }
+    if (total > MAX_TOTAL_BYTES) {
+      setFileErr(`Attachments can total up to ${formatSize(MAX_TOTAL_BYTES)}. Tell us about the rest below and we'll ask for copies.`);
+      return;
+    }
+    setFileErr("");
+    setFiles(next);
+  }
+
+  function removeFile(index) {
+    setFiles(files.filter((_, i) => i !== index));
+    setFileErr("");
+  }
 
   const notUnder13 = age !== "under13";
   const isImmigration = issue === "immigration";
@@ -71,21 +108,27 @@ export default function GetSupportForm() {
     setSubmitting(true);
     setSubmitErr(false);
     try {
-      const data = Object.fromEntries(new FormData(form).entries());
+      const body = new FormData(form);
       const askList = Array.from(askChecked).map((el) => el.value);
-      // FormSubmit just drops fields into an email body, so an array
-      // isn't meaningful to it the way it is to a real backend.
-      data.ask = askList.join(", ");
-      data._subject = `Get Support request — ${data.issue || "unspecified issue"}`;
-      data._replyto = data.age === "under13" ? data.guardianEmail : data.email;
-      data._template = "table";
+      // FormSubmit just drops fields into an email body, so one joined
+      // string is clearer than a repeated field.
+      body.delete("ask");
+      body.set("ask", askList.join(", "));
+      body.set("_subject", `Get Support request — ${body.get("issue") || "unspecified issue"}`);
+      body.set("_replyto", body.get("age") === "under13" ? body.get("guardianEmail") : body.get("email"));
+      body.set("_template", "table");
+      for (const f of files) body.append("attachment", f);
 
       const res = await fetch(FORMSUBMIT_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(data),
+        headers: { Accept: "application/json" },
+        body,
       });
       if (!res.ok) throw new Error("bad response");
+      // FormSubmit answers 200 even when it refuses the submission (for
+      // example an unactivated form), so the HTTP status alone proves nothing.
+      const result = await res.json();
+      if (String(result.success) !== "true") throw new Error(result.message || "not delivered");
 
       setSent(true);
       stageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -104,6 +147,8 @@ export default function GetSupportForm() {
     setAskErr(false);
     setSent(false);
     setSubmitErr(false);
+    setFiles([]);
+    setFileErr("");
   }
 
   return (
@@ -263,8 +308,8 @@ export default function GetSupportForm() {
             </div>
 
             <div>
-              <label htmlFor="c-what" className="gs-label gs-label--block">
-                Tell us what happened<span className="gs-required" aria-hidden="true">*</span>
+              <label htmlFor="c-what" className="gs-label">
+                What happened<span className="gs-required" aria-hidden="true">*</span>
               </label>
               {isImmigration && (
                 <div className="gs-imm-note">
@@ -276,7 +321,7 @@ export default function GetSupportForm() {
                 name="what"
                 required
                 rows={8}
-                placeholder="In your own words — what happened, who was involved, and when."
+                placeholder="Include who was involved and what was said or done."
                 className="gs-textarea"
               />
             </div>
@@ -297,12 +342,14 @@ export default function GetSupportForm() {
 
             <div className="gs-field-row">
               <div className="gs-field" style={{ flexBasis: 280 }}>
-                <label htmlFor="c-lawyer" className="gs-label">Do you have a lawyer for this?</label>
-                <input id="c-lawyer" name="lawyer" type="text" placeholder="If yes, their name and contact" className="gs-input" />
+                <label htmlFor="c-lawyer" className="gs-label">
+                  Do you have a lawyer for this?<span className="gs-required" aria-hidden="true">*</span>
+                </label>
+                <input id="c-lawyer" name="lawyer" type="text" required placeholder="No, or their name and contact" className="gs-input" />
               </div>
               <div className="gs-field" style={{ flexBasis: 280 }}>
-                <label htmlFor="c-nocontact" className="gs-label">Is there anyone we should not contact?</label>
-                <input id="c-nocontact" name="noContact" type="text" placeholder="Name or role" className="gs-input" />
+                <label htmlFor="c-contacted" className="gs-label">Have you contacted anyone else?</label>
+                <input id="c-contacted" name="contactedOthers" type="text" placeholder="e.g. media, advocacy groups" className="gs-input" />
               </div>
             </div>
 
@@ -345,18 +392,56 @@ export default function GetSupportForm() {
               </label>
               <input id="c-date" name="upcomingDate" type="date" className="gs-input" />
             </div>
+          </div>
 
+          <div className="gs-section">
             <div>
-              <label htmlFor="c-docs" className="gs-label">Do you have any documents?</label>
+              <span className="gs-label">Attach any documents you have</span>
+              <p className="gs-file-help">
+                Notices, emails, screenshots, or other records. Up to {MAX_FILES} files,{" "}
+                {formatSize(MAX_TOTAL_BYTES)} total. PDF, images, Word, text, or .zip.
+              </p>
+              <label className="gs-file-btn">
+                Choose files
+                <input
+                  type="file"
+                  multiple
+                  accept={ACCEPTED_FILES}
+                  className="gs-file-input"
+                  onChange={(e) => {
+                    addFiles(Array.from(e.target.files));
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+              {fileErr && <div role="alert" className="gs-error">{fileErr}</div>}
+              {files.length > 0 && (
+                <ul className="gs-file-list">
+                  {files.map((f, i) => (
+                    <li key={`${f.name}-${f.size}`}>
+                      <span className="gs-file-name">{f.name}</span>
+                      <span className="gs-file-size">{formatSize(f.size)}</span>
+                      <button type="button" className="gs-file-remove" onClick={() => removeFile(i)}>
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div>
+              <label htmlFor="c-docs" className="gs-label">Describe your documents</label>
               <textarea
                 id="c-docs"
                 name="docs"
                 rows={3}
-                placeholder="Describe any notices, emails, screenshots, or other records. We'll ask for copies if we need them."
+                placeholder="If you can't attach them, tell us what you have and we'll ask for copies."
                 className="gs-textarea"
               />
             </div>
+          </div>
 
+          <div className="gs-closing">
             <div id="disclaimer" className="gs-disclaimer">
               <h3>Disclaimer and notice</h3>
               <p>

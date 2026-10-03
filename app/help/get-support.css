@@ -9,6 +9,10 @@
   background: #ffffff;
   color: #141821;
   font-family: "Libre Franklin", system-ui, sans-serif;
+
+  /* One line color for every container and control on the page. Navy is
+     reserved for hover, focus and selected states. */
+  --gs-line: #a9b4c6;
 }
 .gs-root a { color: #0b4ea2; }
 .gs-root a:hover { color: #08356e; }
@@ -54,7 +58,7 @@
 
 /* ---- Header ---------------------------------------------------------- */
 
-.gs-header { background: #fff; border-bottom: 1px solid #e7e3d8; }
+.gs-header { background: #fff; border-bottom: 1px solid var(--gs-line); }
 .gs-header-inner {
   max-width: clamp(1200px, 88vw, 1690px);
   margin: 0 auto;
@@ -95,7 +99,7 @@
 .gs-hamburger-icon--open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
 .gs-mobile-menu {
-  border-top: 1px solid #e7e3d8;
+  border-top: 1px solid var(--gs-line);
   padding: 4px clamp(18px, 4vw, 40px) 20px;
   display: flex;
   flex-direction: column;
@@ -103,7 +107,7 @@
 .gs-mobile-menu a,
 .gs-mobile-menu span {
   display: block;
-  padding: 13px 0; border-bottom: 1px solid #efece4;
+  padding: 13px 0; border-bottom: 1px solid var(--gs-line);
   color: #0b1f3a; text-decoration: none; font-size: 15px; font-weight: 600;
 }
 .gs-mobile-donate {
@@ -147,7 +151,7 @@ a.gs-help-value,
 a.gs-help-value:hover {
   color: #262b33;
 }
-.gs-help-value { font-weight: 700; text-decoration: none; white-space: nowrap; }
+.gs-help-value { font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .gs-help-value:hover { text-decoration: underline; }
 .gs-help-value--email { white-space: normal; word-break: break-all; }
 
@@ -165,18 +169,28 @@ a.gs-help-value:hover {
 }
 
 .gs-intro {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin: 32px 0 0;
   max-width: 88ch;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #141821;
+  font-size: 13px;
+  line-height: 1.42;
+  letter-spacing: -0.007em;
+  word-spacing: -0.02em;
+  color: #3f4650;
 }
 .gs-intro p { margin: 0; }
+.gs-intro p + p { margin-top: 10px; }
+.gs-note { font-weight: 900; color: #141821; }
 .gs-intro a { font-weight: 600; }
-.gs-urgent-line { color: #a8171d; font-weight: 600; }
+.gs-urgent-line {
+  margin: 12px 0 24px;
+  max-width: 88ch;
+  font-size: 13px;
+  line-height: 1.42;
+  letter-spacing: -0.007em;
+  word-spacing: -0.02em;
+  color: #a8171d;
+  font-weight: 600;
+}
 .gs-urgent-line a { color: #a8171d; font-weight: 800; white-space: nowrap; }
 .gs-urgent-line strong { font-weight: 800; white-space: nowrap; }
 
@@ -186,12 +200,36 @@ a.gs-help-value:hover {
    down 10% uniformly, per request — `zoom` scales the whole rendered box
    model at once, which is the only way to shrink everything evenly
    without manually recalculating each of the ~150 px values below. */
-.gs-form { zoom: 0.9; }
+.gs-form {
+  zoom: 0.9;
+  /* One line weight for every border in the form. zoom shrinks borders
+     too, so 1px / 0.9 comes out as a true 1px on screen -- without this,
+     borders inside the form rendered thinner than those outside it. */
+  --gs-bw: calc(0.5px / 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-top: 20px;
+}
 
 /* ---- Form — shared field styles ------------------------------------ */
 
-.gs-section { display: flex; flex-direction: column; gap: 24px; padding: 24px 0 0; }
-.gs-section:first-child { padding-top: clamp(28px, 3vw, 40px); }
+/* The form is inset from the page edges on both sides. The sections and
+   the closing block (disclaimer, consent, Submit) share the same padding
+   so they line up. */
+.gs-closing {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 clamp(56px, 9vw, 160px) 0 24px;
+}
+
+.gs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 clamp(56px, 9vw, 160px) 0 24px;
+}
 
 .gs-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 .gs-legend { padding: 0; margin-bottom: 10px; font-size: 14.5px; font-weight: 800; color: #141821; }
@@ -200,14 +238,14 @@ a.gs-help-value:hover {
 
 .gs-label { display: block; margin-bottom: 8px; font-size: 14.5px; font-weight: 800; color: #141821; }
 .gs-label--block { margin: 0 0 -14px; }
-.gs-hint { font-weight: 500; color: #6c7683; }
+.gs-hint { font-size: 13px; font-weight: 400; color: #5a6370; }
 
 .gs-input,
 .gs-textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 14px 16px;
-  border: 1.5px solid #cfc9b8;
+  padding: 10px 12px;
+  border: var(--gs-bw) solid var(--gs-line);
   background: #fff;
   font-size: 15px;
   color: #141821;
@@ -225,7 +263,7 @@ a.gs-help-value:hover {
 .gs-option-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .gs-option-pill {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 10px 15px; background: #fff; border: 1.5px solid #d8d3c4;
+  padding: 7px 12px; background: #fff; border: var(--gs-bw) solid var(--gs-line);
   font-size: 14px; font-weight: 400; cursor: pointer;
 }
 .gs-option-pill input { accent-color: #0a2447; width: 16px; height: 16px; margin: 0; }
@@ -242,6 +280,67 @@ a.gs-help-value:hover {
 }
 
 .gs-error { font-size: 14px; font-weight: 700; color: #b3151b; margin-top: 10px; }
+
+/* ---- File attachments ------------------------------------------------- */
+
+.gs-file-help { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: #5a6370; }
+
+/* Placeholders match the helper text above: same size, color, weight. */
+.gs-input::placeholder,
+.gs-textarea::placeholder {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #5a6370;
+  opacity: 1;
+}
+
+/* The real input stays in the page (visually hidden) so it keeps keyboard
+   focus; the label around it is the visible button. */
+.gs-file-btn {
+  position: relative;
+  display: inline-block;
+  padding: 11px 20px;
+  background: #fff;
+  border: var(--gs-bw) solid var(--gs-line);
+  color: #0a2447;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.gs-file-btn:hover { background: #0a2447; color: #fff; }
+.gs-file-btn:focus-within { outline: 2px solid #ffd166; outline-offset: 2px; }
+.gs-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.gs-file-list { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gs-file-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: var(--gs-bw) solid var(--gs-line);
+  font-size: 14px;
+}
+.gs-file-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.gs-file-size { flex: none; color: #5a6370; font-size: 13px; }
+.gs-file-remove {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #a8171d;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 /* ---- Under-13 panel -------------------------------------------------- */
 
@@ -261,19 +360,19 @@ a.gs-help-value:hover {
 .gs-issue-option {
   position: relative;
   display: flex; align-items: center; gap: 9px;
-  padding: 11px 15px; border: 1.5px solid #d8d3c4;
+  padding: 8px 12px; border: var(--gs-bw) solid var(--gs-line);
   font-size: 14px; font-weight: 400; cursor: pointer;
 }
 .gs-issue-option:hover { border-color: #0a2447; }
 .gs-issue-option input { accent-color: #0a2447; width: 16px; height: 16px; margin: 0; }
 .gs-issue-option--selected::after {
-  content: ""; position: absolute; inset: -1.5px;
-  border: 2.5px solid #0a2447; pointer-events: none;
+  content: ""; position: absolute; inset: calc(-1 * var(--gs-bw));
+  border: calc(2px / 0.9) solid #0a2447; pointer-events: none;
 }
 
 .gs-imm-note {
   margin-bottom: 8px;
-  padding: 13px 16px; background: #fff6db; border: 1px solid #ecd087;
+  padding: 13px 16px; background: #fff6db; border: var(--gs-bw) solid #ecd087;
   font-size: 14px; line-height: 1.6; color: #5d4a00;
 }
 
@@ -309,7 +408,7 @@ a.gs-help-value:hover {
 .gs-confirmation-lede { margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: #3f4650; }
 .gs-confirmation-tip { margin: 12px 0 0; font-size: 15px; line-height: 1.6; color: #6c7683; }
 .gs-send-another {
-  margin-top: 26px; padding: 13px 22px; background: #fff; border: 2px solid #0a2447;
+  margin-top: 26px; padding: 13px 22px; background: #fff; border: 1px solid var(--gs-line);
   border-radius: 0; color: #0a2447; font-size: 14px; font-weight: 800; cursor: pointer;
 }
 .gs-send-another:hover { background: #0a2447; color: #fff; }
@@ -318,7 +417,7 @@ a.gs-help-value:hover {
 
 .gs-bottom-help {
   display: none;
-  border-top: 1px solid #e7e3d8;
+  border-top: 1px solid var(--gs-line);
   margin-top: clamp(32px, 5vw, 56px);
 }
 .gs-bottom-help-container {
@@ -373,11 +472,7 @@ a.gs-help-value:hover {
    --------------------------------------------------------------------- */
 
 @media (max-width: 640px) {
-  .gs-section + .gs-section {
-    border-top: 1px solid #e7e3d8;
-    margin-top: 4px;
-    padding-top: 28px;
-  }
+  .gs-section, .gs-closing { padding-left: 14px; padding-right: 28px; }
 
   .gs-option-row {
     flex-direction: column;
@@ -388,7 +483,7 @@ a.gs-help-value:hover {
   .gs-issue-option {
     width: 100%;
     box-sizing: border-box;
-    padding: 13px 16px;
+    padding: 9px 14px;
   }
 
   .gs-input,

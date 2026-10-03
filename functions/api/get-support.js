@@ -37,7 +37,7 @@ function validate(body) {
 
   if (!str(body.issue, 40).trim()) return "issue is required";
 
-  for (const field of ["where", "when", "what", "triedSteps"]) {
+  for (const field of ["where", "when", "what", "triedSteps", "lawyer"]) {
     if (!str(body[field]).trim()) return `${field} is required`;
   }
 
@@ -90,7 +90,7 @@ function formatEmail(body) {
     str(body.triedSteps, 4000),
     "",
     `Existing lawyer: ${str(body.lawyer, 300) || "(none given)"}`,
-    `Do not contact: ${str(body.noContact, 300) || "(none given)"}`,
+    `Contacted others: ${str(body.contactedOthers, 300) || "(none given)"}`,
     "",
     `Requested action(s): ${ask.join(", ")}`,
     ask.includes("Something else") ? `  Other: ${str(body.askOther, 300)}` : null,

@@ -39,7 +39,7 @@ export default function GetSupportPage() {
 
               <div className="gs-intro">
                 <p>
-                  This form is intended for students and youth whose rights have been affected on or off
+                  <strong className="gs-note">Note:</strong> This form is intended for students and youth whose rights have been affected on or off
                   campus. Depending on your situation, we can offer advising, investigation, legal assistance, or
                   advocacy.
                 </p>
@@ -61,11 +61,12 @@ export default function GetSupportPage() {
                   </a>
                   .
                 </p>
-                <p className="gs-urgent-line">
-                  If you need urgent assistance, call or text <a href="tel:2026702515">202-670-2515</a>, or
-                  reach out on Signal at <strong>@sclu.01</strong>.
-                </p>
               </div>
+
+              <p className="gs-urgent-line">
+                If you need urgent assistance, call or text <a href="tel:2026702515">202-670-2515</a>, or
+                reach out on Signal at <strong>@sclu.01</strong>.
+              </p>
 
               <GetSupportForm />
             </div>
