@@ -6,7 +6,7 @@ import SupportHelpBlocks from "../../components/SupportHelpBlocks";
 export const metadata = {
   title: "Get Support — SCLU",
   description:
-    "Request assistance from SCLU: advising, investigation, legal assistance, or advocacy for students and young people whose rights have been affected on or off campus.",
+    "Request assistance from SCLU: advising, investigation, legal assistance, or advocacy for students and youth whose rights have been affected on or off campus.",
 };
 
 const DONATE_URL =
@@ -39,9 +39,9 @@ export default function GetSupportPage() {
 
               <div className="gs-intro">
                 <p>
-                  This form is intended for students and young people whose rights have been affected on or off
+                  This form is intended for students and youth whose rights have been affected on or off
                   campus. Depending on your situation, we can offer advising, investigation, legal assistance, or
-                  advocacy. Legal assistance is provided through the Students&rsquo; Civil Liberties Foundation.
+                  advocacy.
                 </p>
                 <p>
                   We do our best to help everyone who reaches out. Because our resources are limited, attorney
