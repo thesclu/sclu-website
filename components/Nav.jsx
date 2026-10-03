@@ -25,7 +25,7 @@ export default function Nav() {
         <Magnetic strength={0.3}>
           <a href="#press">Press</a>
           <a href="#team">Team</a>
-          <a href="/get-support">Get Support</a>
+          <a href="/help">Get Support</a>
           <a className="nav-cta" href="#join">Join ✊</a>
         </Magnetic>
       </div>

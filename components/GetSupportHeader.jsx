@@ -4,7 +4,7 @@ import { useState } from "react";
 const DONATE_URL =
   "https://www.zeffy.com/en-US/donation-form/donate-to-empower-youth-organizing-in-san-diego-2";
 
-// This header belongs only to /get-support, the only page this site
+// This header belongs only to /help, the only page this site
 // actually has right now. Every nav item it shows the real site's future
 // structure (Campaigns, Press, About, etc.), but only three destinations
 // actually exist yet: Donate, Instagram, and the sclusd.org redirect.
@@ -19,7 +19,7 @@ export default function GetSupportHeader() {
         <div className="gs-utility-inner">
           <div className="gs-utility-links">
             <span>Know Your Rights</span>
-            <a href="/get-support" className="gs-utility-current">Get Support</a>
+            <a href="/help" className="gs-utility-current">Get Support</a>
             <span>Español</span>
           </div>
           <div className="gs-utility-links">
@@ -69,7 +69,7 @@ export default function GetSupportHeader() {
             <span>Press</span>
             <span>About</span>
             <span>Know Your Rights</span>
-            <a href="/get-support">Get Support</a>
+            <a href="/help">Get Support</a>
             <span>Español</span>
             <a href="https://sclusd.org" target="_blank" rel="noopener">SCLU San Diego ↗</a>
             <a href={DONATE_URL} target="_blank" rel="noopener" className="gs-mobile-donate">Donate</a>
